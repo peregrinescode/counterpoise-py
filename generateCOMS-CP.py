@@ -86,6 +86,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
     with open(dir + job_name + '-pair.com', "w") as text_file:
         print(cleandoc(
             f'''
+            %chk=dimer.chk
             %nprocshared={nprocshared}
             %mem={mem}
             #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
