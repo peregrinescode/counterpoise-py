@@ -64,7 +64,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
         print(geom_molA.to_string(header=False, index=False), file=text_file)
         ghost_molB = geom_molB.copy() # Turn molecule B into a ghost
         ghost_molB['atom'] = ghost_molB['atom'] + '-Bq' # Add -Bq to each atom, marking it as a ghost
-        print(ghost_molB.to_string(header=False, index=False), file=text_file)
+        print(ghost_molB.to_string(header=False, index=False), file=text_file, end='\n\n')
 
     # Molecule B with ghost atoms of molecule A
     with open(dir + job_name + '-part2.com', "w") as text_file:
@@ -80,7 +80,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
         ghost_molA = geom_molA.copy() # Turn molecule A into a ghost
         ghost_molA['atom'] = ghost_molA['atom'] + '-Bq' # Add -Bq to each atom, marking it as a ghost
         print(ghost_molA.to_string(header=False, index=False), file=text_file)
-        print(geom_molB.to_string(header=False, index=False), file=text_file)
+        print(geom_molB.to_string(header=False, index=False), file=text_file, end='\n\n')
 
     # Molecule AB - the pair/dimer
     with open(dir + job_name + '-pair.com', "w") as text_file:
