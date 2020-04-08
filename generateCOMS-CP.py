@@ -72,7 +72,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
             f'''
             %nprocshared={nprocshared}
             %mem={mem}
-            #p SCF(Tight,Conver=8) Integroal(Grid=UltraFine) IOp(6/7=3) {method} nosymm
+            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
 
             CP calculation part 2 - mol B with ghost atoms of mol A
 
