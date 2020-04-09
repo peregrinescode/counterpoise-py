@@ -88,7 +88,7 @@ def CountPJ():
 	print ("HOMO-LUMO coupling: ", J_eff[nhomoA,nlumoB])
 
 	# Print all of above to file
-	with open(path + jobtitle + '-CP-calc.txt', "w") as text_file:
+	with open(path + jobtitle + '/' + jobtitle + '-CP-calc.txt', "w") as text_file:
 		print (f"HOMO A: {nhomoA}", file=text_file)
 		print (f"LUMO B: {nlumoB}", file=text_file)
 		print (f"Gap: {EvalsAB[nhomoAB + 1] - EvalsAB[nhomoAB]}", file=text_file)

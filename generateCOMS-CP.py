@@ -134,10 +134,10 @@ f6_geom = read_geom(f6_xyz)
 # write_CP_com(znpc_geom, f6_geom, job_name)
 
 # Translate one molecule in Z-direction
-for Z in np.arange(3,8,1):	
+for Z in np.arange(3,10,0.5):	
         print (Z)
         znpc_Z = znpc_geom.copy() # restore orignal coordinates
         znpc_Z = translate_molecule(znpc_Z, Z, 'z')
-        job_name = 'znpc-f6tcnnq-translateZ-' + str(Z)
+        job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.','p')
         write_CP_com(znpc_Z, f6_geom, job_name)
 
