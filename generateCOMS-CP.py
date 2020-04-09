@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #coding:utf-8
 """
-  Author:   peregrine.warren<at>physics.ox.ac.uk
+  Author:   peregrine<dot>warren<at>physics<dot>ox<dot>ac<dot>uk
   Purpose:  Generates Gaussian input files (.com) from geometry files (.xyz) of 
             two molecules for a Counterpoise calculation.
             This is a rewrite of the bash scripts in https://github.com/Jenny-Nelson-Group/counterpoise-J
