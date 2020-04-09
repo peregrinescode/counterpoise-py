@@ -1,7 +1,7 @@
 import numpy as np
 #import scipy as sp
 #from scipy import linalg
-import sys
+#import sys
 from cclib.parser import ccopen
 
 path = 'job_files/'
@@ -11,6 +11,7 @@ jobtitle = 'znpc-f6tcnnq-translateZ-4'
 MOLA_CP = path + jobtitle + '/' + jobtitle + "-part1.log"
 MOLB_CP = path + jobtitle + '/' + jobtitle + "-part2.log"
 MOLAB_CP = path + jobtitle + '/' + jobtitle + "-pair.log"
+
 
 def CountPJ():
 	# Read in molecule log files for counterpoise method. Requires IOp(6/7=3) in Gaussian header + ghost atoms to make up basis sets in individual com files
@@ -24,13 +25,9 @@ def CountPJ():
 	molAB_parser = ccopen("%s" % (MOLAB_CP))
 
 	# Parse the relevant data
-	try:
-		molA = molA_parser.parse()
-		molB = molB_parser.parse()
-		molAB = molAB_parser.parse()
-	except AttributeError:
-		print(f"Could not find correct files at {path + jobtitle + '/'}")
-		sys.exit()
+	molA = molA_parser.parse()
+	molB = molB_parser.parse()
+	molAB = molAB_parser.parse()
 
 	print ("Parsed...")
 
@@ -72,35 +69,35 @@ def CountPJ():
 	PsiB_AB_BS = np.dot(MOsB, MolAB_Pro)
 
 	# Calculate the matrix of transfer integrals
-	JAB = np.dot(np.dot(PsiB_AB_BS, np.diagflat(EvalsAB)), PsiA_AB_BS.T)
+	JAB = np.dot(np.dot(PsiA_AB_BS, np.diagflat(EvalsAB)), PsiB_AB_BS.T)
 	JAA = np.dot(np.dot(PsiA_AB_BS, np.diagflat(EvalsAB)), PsiA_AB_BS.T)
 	JBB = np.dot(np.dot(PsiB_AB_BS, np.diagflat(EvalsAB)), PsiB_AB_BS.T)
-	S = np.dot(PsiB_AB_BS, PsiA_AB_BS.T)
+	S = np.dot(PsiA_AB_BS, PsiB_AB_BS.T)
 
-	# Symmetric Lowdin transformation for required J
-	# J_eff_HOMO = (JAB[nhomoA, nhomoB] - 0.5 * (JAA[nhomoA, nhomoA] + JBB[nhomoB, nhomoB]) * S[nhomoA, nhomoB]) / (1.0 - S[nhomoA, nhomoB] * S[nhomoA, nhomoB])
-	# J_eff_LUMO = (JAB[nlumoA, nlumoB] - 0.5 * (JAA[nlumoA, nlumoA] + JBB[nlumoB, nlumoB]) * S[nlumoA, nlumoB]) / (1.0 - S[nlumoA, nlumoB] * S[nlumoA, nlumoB])
+	# Symmetric Lowdin transformation
+	J_eff = (JAB - 0.5 * (JAA + JBB) * S) / (1.0 - S ** 2)
 
-	# molA HOMO with molB LUMO
-	J_eff_p_doping = (JAB[nhomoA, nlumoB] - 0.5 * (JAA[nhomoA, nhomoA] + JBB[nlumoB, nlumoB]) * S[nhomoA, nlumoB]) / (1.0 - S[nhomoA, nlumoB] * S[nhomoA, nlumoB])
+	# Energy eigenvalues
+	eA_eff = 0.5*( (JAA + JBB) - 2 * JAB * S + (JAA - JBB) * np.sqrt(1 - S**2 ))/ ( 1 - S**2 )
+	eB_eff = 0.5*( (JAA + JBB) - 2 * JAB * S - (JAA - JBB) * np.sqrt(1 - S**2 ))/ ( 1 - S**2 )
 
 
 	# Print the HOMO-HOMO and LUMO-LUMO coupling
-	# print ("HOMO-HOMO coupling: ", J_eff_HOMO)
-	# print ("LUMO-LUMO coupling: ", J_eff_LUMO)
-	print ("HOMO-LUMO coupling: ", J_eff_p_doping)
+	print ("HOMO-HOMO coupling: ", J_eff[nhomoA,nhomoB])
+	print ("LUMO-LUMO coupling: ", J_eff[nlumoA,nlumoB])
+	print ("HOMO-LUMO coupling: ", J_eff[nhomoA,nlumoB])
 
 	# Print all of above to file
-	with open(path + jobtitle + '/' + jobtitle + '-CP-calc.txt', "w") as text_file:
+	with open(path + jobtitle + '-CP-calc.txt', "w") as text_file:
 		print (f"HOMO A: {nhomoA}", file=text_file)
 		print (f"LUMO B: {nlumoB}", file=text_file)
 		print (f"Gap: {EvalsAB[nhomoAB + 1] - EvalsAB[nhomoAB]}", file=text_file)
-		#print (f"ESID HOMO-HOMO coupling {0.5 * (EvalsAB[nhomoAB] - EvalsAB[nhomoAB - 1])}", file=text_file)
-		#print (f"ESID LUMO-LUMO coupling {0.5 * (EvalsAB[nhomoAB + 2] - EvalsAB[nhomoAB + 1])}", file=text_file)
-		#print (f"HOMO-HOMO coupling:  {J_eff_HOMO}", file=text_file)
-		#print (f"LUMO-LUMO coupling: {J_eff_LUMO}", file=text_file)
-		print (f"HOMO-LUMO coupling: {J_eff_p_doping}", file=text_file)
-    
+		print (f"HOMO-HOMO coupling:  {J_eff[nhomoA,nhomoB]}", file=text_file)
+		print (f"HOMO-LUMO coupling:  {J_eff[nhomoA,nlumoB]}", file=text_file)
+		print (f"HOMO energy A:  {eA_eff[nhomoA,nhomoA]}", file=text_file)
+		print (f"LUMO energy B:  {eB_eff[nlumoB,nlumoB]}", file=text_file)
+		print (f"LUMO-LUMO coupling: {J_eff[nlumoA,nlumoB]}", file=text_file)
+		print (f"LUMO-HOMO coupling: {J_eff[nlumoA,nhomoB]}", file=text_file)
 
 CountPJ()
 
