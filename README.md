@@ -10,4 +10,4 @@ This script creates three Gaussian input files (.com) of: molecule A with ghost 
 
 After running the .com files produced in the first script through Gaussian, this program performs the counterpoise calculation on the Gaussian output files (.log).
 
-Code based on: [https://github.com/peregrinescode/counterpoise-J](https://github.com/peregrinescode/counterpoise-J)
+Code based on: [https://github.com/Jenny-Nelson-Group/counterpoise-J](https://github.com/Jenny-Nelson-Group/counterpoise-J)
