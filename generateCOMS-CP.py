@@ -166,7 +166,7 @@ for theta in np.linspace(0, 90, num=3):
         f6tcnnq_theta = f6_geom.copy()  # restore orignal coordinates
         f6tcnnq_theta = rotate_molecule(f6tcnnq_theta, degrees=theta)
         job_name = 'znpc-f6tcnnq-rotateZ-' + str(theta).replace('.', 'p')
-        write_CP_com(znpc_geom, f6tcnnq_theta, job_name)
+        write_CP_com(znpc_Z, f6tcnnq_theta, job_name)
 
 
 
