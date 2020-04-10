@@ -9,10 +9,12 @@
 """
 
 import os
+#import sys
 import numpy as np
 import pandas as pd
-from inspect import cleandoc # to ignore indents when printing to file
-#import sys
+from inspect import cleandoc  # to ignore indents when printing to file
+from scipy.spatial.transform import Rotation as R  # for rotating molecules in 3D
+
 
 # Set variables for top of com file
 nprocshared = 16
@@ -115,10 +117,21 @@ def translate_molecule(mol_xyz, d, dr):
     mol_xyz[dr] = mol_xyz[dr] + d
     return mol_xyz
 
-def rotate_molecule(mol_xyz, d, dr, cen):
+def rotate_molecule(mol_xyz, orgin=(0, 0), degrees=90):
     """rotate a molecule by degress deg in a clockwise direction around center cen."""
-    mol_xyz[dr] = mol_xyz[dr] + d
-    return mol_xyz
+    # Make a np array out of coordinates
+    p = np.array(mol_xyz[['x', 'y', 'z']])
+    # Convert degrees to radians
+    rad = np.deg2rad(degrees)
+    # Create rotation
+    r = R.from_quat([0, 0, np.sin(rad / 2), np.cos(rad / 2)])
+    # print('Transformation: ', r.as_euler('xyz', degrees=True))
+    # Apply the rotation to the molecule array
+    p_rotated = r.apply(p)
+    # Put rotation back into the geom style dataframe
+    p_rotated_geom = mol_xyz.copy()
+    p_rotated_geom[['x', 'y', 'z']] = pd.DataFrame(p_rotated, columns=['x', 'y', 'z'])
+    return p_rotated_geom
 
 # define paths
 geoms = 'geom_files/'
@@ -129,15 +142,31 @@ f6_xyz = geoms + 'F6TCNNQ.xyz'
 znpc_geom = read_geom(znpc_xyz)
 f6_geom = read_geom(f6_xyz)
 
-# Write a com file
-# job_name = 'znpc-f6tcnnq'
-# write_CP_com(znpc_geom, f6_geom, job_name)
+# Rotate a square and write a com file
+#square_xzy = geoms + 'square.xyz'
+#square_geom = read_geom(square_xzy)
+#job_name = 'square-rotate'
+#square_rot = rotate_molecule(square_geom, degrees=90)
+#write_com(square_geom, job_name)
 
 # Translate one molecule in Z-direction
-for Z in np.arange(3,10,0.5):	
-        print (Z)
-        znpc_Z = znpc_geom.copy() # restore orignal coordinates
-        znpc_Z = translate_molecule(znpc_Z, Z, 'z')
-        job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.','p')
-        write_CP_com(znpc_Z, f6_geom, job_name)
+# for Z in np.arange(3,10,0.5):
+        #print (Z)
+        # znpc_Z = znpc_geom.copy() # restore orignal coordinates
+        #znpc_Z = translate_molecule(znpc_Z, Z, 'z')
+        #job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.','p')
+        #write_CP_com(znpc_Z, f6_geom, job_name)
+
+# Translate one molecule in Z-direction
+for theta in np.linspace(0, 90, num=3):
+        print (theta)
+        # Place one molecule away in Z-direction
+        znpc_Z = znpc_geom.copy()  # restore orignal coordinates
+        znpc_Z = translate_molecule(znpc_Z, 3.5, 'z')
+        f6tcnnq_theta = f6_geom.copy()  # restore orignal coordinates
+        f6tcnnq_theta = rotate_molecule(f6tcnnq_theta, degrees=theta)
+        job_name = 'znpc-f6tcnnq-rotateZ-' + str(theta).replace('.', 'p')
+        write_CP_com(znpc_geom, f6tcnnq_theta, job_name)
+
+
 
