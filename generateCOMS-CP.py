@@ -139,8 +139,10 @@ geoms = 'geom_files/'
 # Read in molecules
 znpc_xyz = geoms + 'ZnPc.xyz'
 f6_xyz = geoms + 'F6TCNNQ.xyz'
+ethene_xyz = geoms + 'ethene.xyz'
 znpc_geom = read_geom(znpc_xyz)
 f6_geom = read_geom(f6_xyz)
+ethene_geom = read_geom(ethene_xyz)
 
 # Rotate a square and write a com file
 #square_xzy = geoms + 'square.xyz'
@@ -150,23 +152,23 @@ f6_geom = read_geom(f6_xyz)
 #write_com(square_geom, job_name)
 
 # Translate one molecule in Z-direction
-# for Z in np.arange(3,10,0.5):
-        #print (Z)
-        # znpc_Z = znpc_geom.copy() # restore orignal coordinates
-        #znpc_Z = translate_molecule(znpc_Z, Z, 'z')
-        #job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.','p')
-        #write_CP_com(znpc_Z, f6_geom, job_name)
+for Z in np.arange(3,10,0.5):
+        print (Z)
+        ethene_Z = ethene_geom.copy() # restore orignal coordinates
+        ethene_Z = translate_molecule(ethene_Z, Z, 'z')
+        job_name = 'ethene-translateZ-' + str(Z).replace('.','p')
+        write_CP_com(ethene_Z, ethene_geom, job_name)
 
 # Translate one molecule in Z-direction
-for theta in np.linspace(0, 90, num=3):
-        print (theta)
-        # Place one molecule away in Z-direction
-        znpc_Z = znpc_geom.copy()  # restore orignal coordinates
-        znpc_Z = translate_molecule(znpc_Z, 3.5, 'z')
-        f6tcnnq_theta = f6_geom.copy()  # restore orignal coordinates
-        f6tcnnq_theta = rotate_molecule(f6tcnnq_theta, degrees=theta)
-        job_name = 'znpc-f6tcnnq-rotateZ-' + str(theta).replace('.', 'p')
-        write_CP_com(znpc_Z, f6tcnnq_theta, job_name)
+# for theta in np.linspace(0, 90, num=10):
+#         print (theta)
+#         # Place one molecule away in Z-direction
+#         znpc_Z = znpc_geom.copy()  # restore orignal coordinates
+#         znpc_Z = translate_molecule(znpc_Z, 3.5, 'z')
+#         f6tcnnq_theta = f6_geom.copy()  # restore orignal coordinates
+#         f6tcnnq_theta = rotate_molecule(f6tcnnq_theta, degrees=theta)
+#         job_name = 'znpc-f6tcnnq-rotateZ-' + str(theta).replace('.', 'p')
+#         write_CP_com(znpc_Z, f6tcnnq_theta, job_name)
 
 
 
