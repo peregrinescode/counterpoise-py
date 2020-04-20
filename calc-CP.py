@@ -38,9 +38,6 @@ def CountPJ():
 
 	nlumoA = nhomoA + 1
 	nlumoB = nhomoB + 1
-
-	print ("HOMO A: ", nhomoA)
-	print ("LUMO B: ", nlumoB)
 	#print ("HOMO AB: ", nhomoAB)
 
 	# Every basis set should have the same size (the size of the pair)
@@ -57,6 +54,19 @@ def CountPJ():
 
 	# print ("Energies: ", EvalsAB)
 	print ("Gap: ", EvalsAB[nhomoAB + 1] - EvalsAB[nhomoAB])
+
+	# Check degeneracy
+	deg_homo=1
+	deg_lumo=1
+
+	for i in range(1, 10):
+		if (np.absolute(EvalsAB[nhomoAB]-EvalsAB[nhomoAB-i])<0.005):
+		        deg_homo+=1
+		if (np.absolute(EvalsAB[nhomoAB+1+i]-EvalsAB[nhomoAB+1])<0.005):
+		        deg_lumo+=1
+
+	print ("Deg HOMO: ", deg_homo)
+	print ("Deg LUMO: ", deg_lumo)
 
 	# Find HOMO and LUMO from energy splitting in dimer
 	#print ("ESID HOMO-HOMO coupling", 0.5 * (EvalsAB[nhomoAB] - EvalsAB[nhomoAB - 1]))
@@ -83,21 +93,30 @@ def CountPJ():
 
 
 	# Print the HOMO-HOMO and LUMO-LUMO coupling
-	print ("HOMO-HOMO coupling: ", J_eff[nhomoA,nhomoB])
-	print ("LUMO-LUMO coupling: ", J_eff[nlumoA,nlumoB])
-	print ("HOMO-LUMO coupling: ", J_eff[nhomoA,nlumoB])
-
-	# Print all of above to file
 	with open(path + jobtitle + '/' + jobtitle + '-CP-calc.txt', "w") as text_file:
-		print (f"HOMO A: {nhomoA}", file=text_file)
-		print (f"LUMO B: {nlumoB}", file=text_file)
-		print (f"Gap: {EvalsAB[nhomoAB + 1] - EvalsAB[nhomoAB]}", file=text_file)
-		print (f"HOMO-HOMO coupling:  {J_eff[nhomoA,nhomoB]}", file=text_file)
-		print (f"HOMO-LUMO coupling:  {J_eff[nhomoA,nlumoB]}", file=text_file)
-		print (f"HOMO energy A:  {eA_eff[nhomoA,nhomoA]}", file=text_file)
-		print (f"LUMO energy B:  {eB_eff[nlumoB,nlumoB]}", file=text_file)
-		print (f"LUMO-LUMO coupling: {J_eff[nlumoA,nlumoB]}", file=text_file)
-		print (f"LUMO-HOMO coupling: {J_eff[nlumoA,nhomoB]}", file=text_file)
+		if deg_homo == 1:
+			print ("HOMO A: ", eA_eff[nhomoA,nhomoA])
+			print (f"HOMO A: {eA_eff[nhomoA,nhomoA]}", file=text_file)
+			print ("LUMO B: ", eB_eff[nlumoB,nlumoB])
+			print (f"LUMO B: {eB_eff[nlumoB,nlumoB]}", file=text_file)
+			print ("HOMO-HOMO coupling: ", J_eff[nhomoA,nhomoB])
+			print (f"HOMO-HOMO coupling: {J_eff[nhomoA,nhomoB]}", file=text_file)
+			print ("HOMO-LUMO coupling: ", J_eff[nhomoA,nlumoB])
+			print (f"HOMO-LUMO coupling: {J_eff[nhomoA,nlumoB]}", file=text_file)
+		if deg_lumo == 1:
+			print ("LUMO-LUMO coupling: ", J_eff[nlumoA,nlumoB])
+			print (f"LUMO-LUMO coupling: {J_eff[nlumoA,nlumoB]}", file=text_file)
+			print ("LUMO-HOMO coupling: ", J_eff[nlumoA,nhomoB])
+			print (f"LUMO-HOMO coupling: {J_eff[nlumoA,nhomoB]}", file=text_file)
+		if deg_homo != 1:
+			deg_homo=J_eff[nhomoA-deg_homo+1:nhomoA+1,nhomoB-deg_homo+1:nhomoB+1]
+			print ("Degenerate HOMO-HOMO coupling: ", np.sqrt(np.mean(np.square(deg_homo))))
+			print (f"Degenerate HOMO-HOMO coupling: {np.sqrt(np.mean(np.square(deg_homo)))}", file=text_file)
+		if deg_lumo != 1:
+			deg_lumo=J_eff[nlumoA:nlumoA+deg_lumo,nlumoB:nlumoB+deg_lumo]
+			print ("Degenerate LUMO-LUMO coupling: ", np.sqrt(np.mean(np.square(deg_lumo))))
+			print (f"Degenerate LUMO-LUMO coupling: {np.sqrt(np.mean(np.square(deg_lumo)))}", file=text_file)
+
 
 CountPJ()
 
