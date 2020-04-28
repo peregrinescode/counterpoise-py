@@ -152,21 +152,21 @@ ethene_geom = read_geom(ethene_xyz)
 #write_com(square_geom, job_name)
 
 # 00-ethene
-for Z in np.linspace(3, 15, 25):
-        print (Z)
-        ethene_Z = ethene_geom.copy()  # restore orignal coordinates
-        ethene_Z = translate_molecule(ethene_Z, Z, 'z')
-        job_name = 'ethene-translateZ-' + str(Z).replace('.', 'p')
-        write_CP_com(ethene_Z, ethene_geom, job_name)
+# for Z in np.linspace(3, 15, 25):
+#         print (Z)
+#         ethene_Z = ethene_geom.copy()  # restore orignal coordinates
+#         ethene_Z = translate_molecule(ethene_Z, Z, 'z')
+#         job_name = 'ethene-translateZ-' + str(Z).replace('.', 'p')
+#         write_CP_com(ethene_Z, ethene_geom, job_name)
         
 
 # Translate one molecule in Z-direction
-#for Z in np.linspace(4, 4.5, 6):
-        #print (Z)
-        #znpc_Z = znpc_geom.copy()  # restore orignal coordinates
-        #znpc_Z = translate_molecule(znpc_Z, Z, 'z')
-        #job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
-        #write_CP_com(znpc_Z, f6_geom, job_name)
+for Z in np.linspace(4, 4.5, 6):
+        print (Z)
+        znpc_Z = znpc_geom.copy()  # restore orignal coordinates
+        znpc_Z = translate_molecule(znpc_Z, Z, 'z')
+        job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
+        write_CP_com(znpc_Z, f6_geom, job_name)
 
 # Translate one molecule in Z-direction
 # for theta in np.linspace(0, 90, num=10):
