@@ -58,7 +58,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
             f'''
             %nprocshared={nprocshared}
             %mem={mem}
-            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(3/33=1,6/7=3) {method} nosymm
+            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
 
             CP calculation part 1 - mol A with ghost atoms of mol B
 
@@ -74,7 +74,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
             f'''
             %nprocshared={nprocshared}
             %mem={mem}
-            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(3/33=1,6/7=3) {method} nosymm
+            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
 
             CP calculation part 2 - mol B with ghost atoms of mol A
 
@@ -138,9 +138,13 @@ geoms = 'geom_files/'
 
 # Read in molecules
 znpc_xyz = geoms + 'ZnPc.xyz'
+f4znpc_xyz = geoms + 'F4ZnPc.xyz'
+f8znpc_xyz = geoms + 'F8ZnPc.xyz'
 f6_xyz = geoms + 'F6TCNNQ.xyz'
 ethene_xyz = geoms + 'ethene.xyz'
 znpc_geom = read_geom(znpc_xyz)
+f4znpc_geom = read_geom(f4znpc_xyz)
+f8znpc_geom = read_geom(f8znpc_xyz)
 f6_geom = read_geom(f6_xyz)
 ethene_geom = read_geom(ethene_xyz)
 
@@ -161,12 +165,12 @@ ethene_geom = read_geom(ethene_xyz)
         
 
 # Translate one molecule in Z-direction
-for Z in np.linspace(4, 4.5, 6):
+for Z in np.linspace(2, 15, 27):
         print (Z)
-        znpc_Z = znpc_geom.copy()  # restore orignal coordinates
-        znpc_Z = translate_molecule(znpc_Z, Z, 'z')
-        job_name = 'znpc-f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
-        write_CP_com(znpc_Z, f6_geom, job_name)
+        f8znpc_Z = f8znpc_geom.copy()  # restore orignal coordinates
+        f8znpc_Z = translate_molecule(f8znpc_Z, Z, 'z')
+        job_name = 'f4znpc-f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
+        write_CP_com(f8znpc_Z, f6_geom, job_name)
 
 # Translate one molecule in Z-direction
 # for theta in np.linspace(0, 90, num=10):
