@@ -140,11 +140,13 @@ geoms = 'geom_files/'
 znpc_xyz = geoms + 'ZnPc.xyz'
 f4znpc_xyz = geoms + 'F4ZnPc.xyz'
 f8znpc_xyz = geoms + 'F8ZnPc.xyz'
+f16znpc_xyz = geoms + 'F16ZnPc.xyz'
 f6_xyz = geoms + 'F6TCNNQ.xyz'
 ethene_xyz = geoms + 'ethene.xyz'
 znpc_geom = read_geom(znpc_xyz)
 f4znpc_geom = read_geom(f4znpc_xyz)
 f8znpc_geom = read_geom(f8znpc_xyz)
+f16znpc_geom = read_geom(f16znpc_xyz)
 f6_geom = read_geom(f6_xyz)
 ethene_geom = read_geom(ethene_xyz)
 
@@ -165,23 +167,21 @@ ethene_geom = read_geom(ethene_xyz)
         
 
 # Translate one molecule in Z-direction
-for Z in np.linspace(2, 15, 27):
+for Z in np.linspace(0, 2, 5):
         print (Z)
-        f8znpc_Z = f8znpc_geom.copy()  # restore orignal coordinates
-        f8znpc_Z = translate_molecule(f8znpc_Z, Z, 'z')
+        f4znpc_Z = f4znpc_geom.copy()  # restore orignal coordinates
+        f4znpc_Z = translate_molecule(f4znpc_Z, Z, 'z')
         job_name = 'f4znpc-f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
-        write_CP_com(f8znpc_Z, f6_geom, job_name)
+        write_CP_com(f4znpc_Z, f6_geom, job_name)
 
-# Translate one molecule in Z-direction
+# Rotate one molecule around z:
 # for theta in np.linspace(0, 90, num=10):
 #         print (theta)
 #         # Place one molecule away in Z-direction
-#         znpc_Z = znpc_geom.copy()  # restore orignal coordinates
-#         znpc_Z = translate_molecule(znpc_Z, 3.5, 'z')
+#         f16znpc_Z = f16znpc_geom.copy()  # restore orignal coordinates
+#         f16znpc_Z = translate_molecule(f16znpc_Z, 3.5, 'z')
 #         f6tcnnq_theta = f6_geom.copy()  # restore orignal coordinates
 #         f6tcnnq_theta = rotate_molecule(f6tcnnq_theta, degrees=theta)
-#         job_name = 'znpc-f6tcnnq-rotateZ-' + str(theta).replace('.', 'p')
-#         write_CP_com(znpc_Z, f6tcnnq_theta, job_name)
-
-
+#         job_name = 'f16znpc-f6tcnnq-rotateZ-' + str(theta).replace('.', 'p')
+#         write_CP_com(f16znpc_Z, f6tcnnq_theta, job_name)
 

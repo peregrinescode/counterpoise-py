@@ -5,7 +5,7 @@ import sys
 from cclib.parser import ccopen
 
 DATA = '/data/phys-prw17/phys1470/'
-path = DATA + 'job_files/03-f4znpc-f6tcnnq-translate-z/'
+path = DATA + 'job_files/01-znpc-f6tcnnq-translate-z/'
 #jobtitle = 'znpc-f6tcnnq-translateZ-3p0'
 jobtitle = sys.argv[1]
 
@@ -104,6 +104,15 @@ def CountPJ():
         PsiA_AB_BS = np.dot(MOsA, MolAB_Pro)
         PsiB_AB_BS = np.dot(MOsB, MolAB_Pro)
 
+        print ('PsiA_AB_BS = ',PsiA_AB_BS[nhomoA, nlumoB])
+        print ('PsiB_AB_BS = ',PsiB_AB_BS[nhomoA, nlumoB])
+        temp = np.dot(PsiA_AB_BS, np.diagflat(EvalsAB))
+        print ('PsiA_AB_BS dot E_lk = ', temp[nhomoA,nlumoB])
+        temp2 = PsiB_AB_BS.T
+        print ('PsiB_AB_BS^T = ',temp2[nhomoA, nlumoB])
+        temp3 = np.dot(temp, temp2)
+        print ('PsiA_AB_BS dot E_lk dot PsiA_AB_BS^T = ', temp3[nhomoA,nlumoB])
+
         # Calculate the matrix of transfer integrals
         JAB = np.dot(np.dot(PsiA_AB_BS, np.diagflat(EvalsAB)), PsiB_AB_BS.T)
         JAA = np.dot(np.dot(PsiA_AB_BS, np.diagflat(EvalsAB)), PsiA_AB_BS.T)
@@ -112,6 +121,11 @@ def CountPJ():
 
         # Symmetric Lowdin transformation
         J_eff = (JAB - 0.5 * (JAA + JBB) * S) / (1.0 - S ** 2)
+
+        # print ('j_AB = ',JAB[nhomoA, nlumoB])
+        # print ('j_AA = ',JAA[nhomoA, nlumoB])
+        # print ('j_BB = ',JBB[nhomoA, nlumoB])
+        # print ('S_AB = ',S[nhomoA, nlumoB])
 
         # Energy eigenvalues
         eA_eff = 0.5*( (JAA + JBB) - 2 * JAB * S + (JAA - JBB) * np.sqrt(1 - S**2 ))/ ( 1 - S**2 )
