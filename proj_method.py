@@ -9,10 +9,8 @@ import sys
 from scipy import linalg
 from cclib.parser import ccopen
 
-# DATA = '/data/phys-prw17/phys1470/'
-DATA = './'
-# path = DATA + 'job_files/00-ethene-translate-Z/'
-path = DATA + 'job_files/'
+DATA = '/data/phys-prw17/phys1470/'
+path = DATA + 'job_files/10-znpc-znpc-translate-z/'
 #jobtitle = 'znpc-f6tcnnq-translateZ-3p0'
 jobtitle = sys.argv[1]
 
@@ -21,10 +19,8 @@ jobtitle = sys.argv[1]
 #MOLB_CP = path + jobtitle + '/' + jobtitle + "-part2.log"
 MOLAB_CP = path + jobtitle + '/' + jobtitle + "-pair.log"
 
-MOLA_CP = './job_files/ethene.log'
-MOLB_CP = './job_files/ethene.log'
-
-
+MOLA_CP = DATA + 'job_files/optimisations/znpc-opt-SP.log'
+MOLB_CP = DATA + 'job_files/optimisations/znpc-opt-SP.log'
 
 def ProJ():
     # Read in molecule log files for projective method. Requires iop(3/33=1,6/7=3) in Gaussian header for calculation on each molecule + the pair

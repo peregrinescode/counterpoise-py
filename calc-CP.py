@@ -5,7 +5,7 @@ import sys
 from cclib.parser import ccopen
 
 DATA = '/data/phys-prw17/phys1470/'
-path = DATA + 'job_files/01-znpc-f6tcnnq-translate-z/'
+path = DATA + 'job_files/02-znpc-f6tcnnq-rotate-z/'
 #jobtitle = 'znpc-f6tcnnq-translateZ-3p0'
 jobtitle = sys.argv[1]
 
@@ -140,14 +140,14 @@ def CountPJ():
                 if deg_homo == 1:
                         #print ("nHOMO A: ", nhomoA)
                         #print ("nHOMO B: ", nlumoB)
-                        #print ("HOMO A: ", nhomoA, eA_eff[nhomoA,nhomoA])
+                        # print ("HOMO A: ", nhomoA, eA_eff[nhomoA,nhomoA])
                         #print (f"HOMO A: {eA_eff[nhomoA,nhomoA]}", file=text_file)
                         #print ("LUMO B: ", nlumoB, eB_eff[nlumoB,nlumoB])
                         #print (f"LUMO B: {eB_eff[nlumoB,nlumoB]}", file=text_file)
-                        # print ("ESID HOMO-HOMO coupling", 0.5 * (EvalsAB[nhomoAB] - EvalsAB[nhomoAB - 1]))
+                        #print ("ESID HOMO-HOMO coupling", 0.5 * (EvalsAB[nhomoAB] - EvalsAB[nhomoAB - 1]))
                         # print (f"ESID HOMO-HOMO coupling {0.5 * (EvalsAB[nhomoAB] - EvalsAB[nhomoAB - 1])}", file=text_file)
-                        #print ("HOMO-HOMO coupling: ", J_eff[nhomoA,nhomoB])
-                        #print (f"HOMO-HOMO coupling: {J_eff[nhomoA,nhomoB]}", file=text_file)
+                        # print ("HOMO-HOMO coupling: ", J_eff[nhomoA,nhomoB])
+                        # print (f"HOMO-HOMO coupling: {J_eff[nhomoA,nhomoB]}", file=text_file)
                         print ("HOMO", nhomoA, "-LUMO", nlumoB," coupling: ", J_eff[nhomoA, nlumoB])
                         print (f"HOMO-LUMO coupling: {J_eff[nhomoA,nlumoB]}", file=text_file)
                 if deg_lumo == 1:
