@@ -172,13 +172,21 @@ thiophene_geom = read_geom(thiophene_xyz)
 #         write_CP_com(ethene_Z, ethene_geom, job_name)
         
 
-# Translate one molecule in Z-direction
-for Z in np.linspace(3, 15, 25):
+# # Translate one molecule in Z-direction
+# for Z in np.linspace(3, 15, 25):
+#         print (Z)
+#         f4znpc_z = f4znpc_geom.copy()  # restore orignal coordinates
+#         f4znpc_z = translate_molecule(f4znpc_z, Z, 'z')
+#         job_name = 'f4znpc-translateZ-' + str(Z).replace('.', 'p')
+#         write_CP_com(f4znpc_z, f4znpc_geom, job_name)
+
+# Translate one molecule in Z-direction only one calculation
+for Z in [3.77]:
         print (Z)
-        f6tcnnq_z = f6_geom.copy()  # restore orignal coordinates
-        f6tcnnq_z = translate_molecule(f6tcnnq_z, Z, 'z')
-        job_name = 'f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
-        write_CP_com(f6tcnnq_z, f6_geom, job_name)
+        f16znpc_z = f16znpc_geom.copy()  # restore orignal coordinates
+        f16znpc_z = translate_molecule(f16znpc_z, Z, 'z')
+        job_name = 'f16znpc-translateZ-' + str(Z).replace('.', 'p')
+        write_CP_com(f16znpc_z, f16znpc_geom, job_name)
 
 #Rotate one molecule around z:
 # for theta in np.linspace(0, 90, num=10):
