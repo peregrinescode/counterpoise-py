@@ -5,6 +5,5 @@
 *.rwf
 *.scr
 *.out
-job_files/*
 Pipfile
 *.lock
