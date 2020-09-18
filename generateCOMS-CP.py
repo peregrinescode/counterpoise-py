@@ -58,7 +58,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
             f'''
             %nprocshared={nprocshared}
             %mem={mem}
-            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
+            #p SCF(Tight,Conver=12) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
 
             CP calculation part 1 - mol A with ghost atoms of mol B
 
@@ -74,7 +74,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
             f'''
             %nprocshared={nprocshared}
             %mem={mem}
-            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
+            #p SCF(Tight,Conver=12) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
 
             CP calculation part 2 - mol B with ghost atoms of mol A
 
@@ -91,7 +91,7 @@ def write_CP_com(geom_molA, geom_molB, job_name):
             %chk=dimer.chk
             %nprocshared={nprocshared}
             %mem={mem}
-            #p SCF(Tight,Conver=8) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
+            #p SCF(Tight,Conver=12) Integral(Grid=UltraFine) IOp(6/7=3) {method} nosymm
 
             CP calculation part 3 - mol AB 
 
@@ -175,10 +175,10 @@ thiophene_geom = read_geom(thiophene_xyz)
 # Translate one molecule in Z-direction
 for Z in np.linspace(3, 15, 25):
         print (Z)
-        ethene_z = ethene_geom.copy()  # restore orignal coordinates
-        ethene_z = translate_molecule(ethene_z, Z, 'z')
-        job_name = 'ethene-ethene-translateZ-' + str(Z).replace('.', 'p')
-        write_CP_com(ethene_z, ethene_geom, job_name)
+        f6tcnnq_z = f6_geom.copy()  # restore orignal coordinates
+        f6tcnnq_z = translate_molecule(f6tcnnq_z, Z, 'z')
+        job_name = 'f6tcnnq-translateZ-' + str(Z).replace('.', 'p')
+        write_CP_com(f6tcnnq_z, f6_geom, job_name)
 
 #Rotate one molecule around z:
 # for theta in np.linspace(0, 90, num=10):

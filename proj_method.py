@@ -11,6 +11,7 @@ from cclib.parser import ccopen
 
 DATA = '/data/phys-prw17/phys1470/'
 path = DATA + 'job_files/10-znpc-znpc-translate-z/'
+# path = DATA + 'job_files/11-f6tcnnq-f6tcnnq-translate-z/'
 #jobtitle = 'znpc-f6tcnnq-translateZ-3p0'
 jobtitle = sys.argv[1]
 
@@ -21,6 +22,9 @@ MOLAB_CP = path + jobtitle + '/' + jobtitle + "-pair.log"
 
 MOLA_CP = DATA + 'job_files/optimisations/znpc-opt-SP.log'
 MOLB_CP = DATA + 'job_files/optimisations/znpc-opt-SP.log'
+
+# MOLA_CP = DATA + 'job_files/optimisations/f6tcnnq-opt-SP.log'
+# MOLB_CP = DATA + 'job_files/optimisations/f6tcnnq-opt-SP.log'
 
 def ProJ():
     # Read in molecule log files for projective method. Requires iop(3/33=1,6/7=3) in Gaussian header for calculation on each molecule + the pair
@@ -134,7 +138,7 @@ def ProJ():
         j3 = F[int(nhomoB + nbasisA - 1), int(nhomoA - 1)]
         print ("HOMO-1-HOMO-1 coupling: ", j3)
         print('------------------------------')
-        print (' HOMO-HOMO RMS equals', np.sqrt(np.mean(np.square([j0, j1, j2, j3]))))
+        print (' HOMO-HOMO RMS equals', np.sqrt(np.mean(np.square([j0, j3]))))
         print('------------------------------')
 
         #Degeneracy_HOMO = deg_homo
@@ -154,7 +158,7 @@ def ProJ():
         j3 = F[int(nhomoB + nbasisA + 1 + 1), int(nhomoA + 1 + 1)]
         print ("LUMO+1-LUMO+1 coupling: ", j3)
         print('------------------------------')
-        print ('LUMO-LUMO-RMS equals', np.sqrt(np.mean(np.square([j0, j1, j2, j3]))))
+        print ('LUMO-LUMO-RMS equals', np.sqrt(np.mean(np.square([j0, j3]))))
         print('------------------------------')
 
         #print ("LUMO-LUMO coupling: ", F[int(nhomoB + nbasisA + 1), int(nhomoA + 1)])
